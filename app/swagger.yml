@@ -164,3 +164,61 @@ paths:
                             payload:
                                 type: object
                                 default: {}
+    /setGlobalData:
+        post:
+            operationId: views.data.set_global_data
+            tags:
+                - user
+                - global
+            summary: Insert a key value in global
+            description: Insert a key value in global_data.json, updated if exist
+            parameters:
+                - name: data
+                  in: body
+                  required: True
+                  schema:
+                      type: object
+                      properties:
+                          name:
+                              type: string
+                          value:
+                              type: string
+            responses:
+                201:
+                    description: Successful name and value entered in user data file
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: false
+                            message:
+                                type: string
+                                default: Data submitted
+                            payload:
+                                type: object
+                                default: {name: value}
+                200:
+                    description: Successful name and value updated in user data file
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: false
+                            message:
+                                type: string
+                                default: Data updated
+                            payload:
+                                type: object
+                                default: {name: value}
+                400:
+                    description: Error in entry
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: true
+                            message:
+                                type: string
+                            payload:
+                                type: object
+                                default: {}

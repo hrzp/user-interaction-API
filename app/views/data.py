@@ -23,3 +23,22 @@ def set_user_data(username, data):
     status_code = utils.upsert_data(path, data['name'], data['value'])
     message = 'Data submitted' if status_code == 201 else "Data updated"
     return Response.success(message=message, payload=data, status_code=status_code)
+
+
+def set_global_data(data):
+    """
+    This function inserts a key, value in global data.json in the main directory.
+    if the key has existed it replaced the value.
+    work same as set_user_data
+    :url /api/setGlobalData/:   path
+    :param data:                name and value to submit
+    :return:                    201 on create, 200 on update, 400 on errors
+    """
+
+    # create the user data.json path
+    path = os.path.join(utils.cwd_data(), "global_data.json")
+
+    # insert key, value. updated if exist
+    status_code = utils.upsert_data(path, data['name'], data['value'])
+    message = 'Data submitted' if status_code == 201 else "Data updated"
+    return Response.success(message=message, payload=data, status_code=status_code)
