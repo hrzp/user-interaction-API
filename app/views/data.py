@@ -42,3 +42,38 @@ def set_global_data(data):
     status_code = utils.upsert_data(path, data['name'], data['value'])
     message = 'Data submitted' if status_code == 201 else "Data updated"
     return Response.success(message=message, payload=data, status_code=status_code)
+
+
+def get_user_data(username):
+    """
+    This function fetches all data from user and global data files and returns them.
+    In duplicate data, User data is prioritized
+    :url /api/getUserData/{username}:   path
+    :param username:                    username in data directory
+    :return:                            200 on success, 400 on errors
+    """
+
+    # create the user data.json path
+    path = os.path.join(utils.cwd_data(), username, "data.json")
+
+    # create the global data.json path
+    global_path = os.path.join(utils.cwd_data(), "global_data.json")
+
+    # Collect global data first and update with user data
+    # It will replace duplicate user data with globals
+    result = dict()
+    result = utils.get_data(global_path)
+    result.update(utils.get_data(path))
+
+    # produce the desired response
+    data = list(
+        map(lambda key_value:
+            {
+                "name": key_value[0],
+                "value": key_value[1]
+            },
+            result.items()
+            )
+    )
+
+    return Response.success("", payload=data)

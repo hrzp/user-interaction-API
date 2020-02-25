@@ -45,6 +45,7 @@ def upsert_data(path, name, value):
     try:
         pickle_in = open(path, "rb")
         latest_data = pickle.load(pickle_in)
+        pickle_in.close()
     except EOFError:
         pass
 
@@ -58,3 +59,17 @@ def upsert_data(path, name, value):
     pickle_out.close()
 
     return status_code
+
+
+def get_data(path):
+    data = dict()
+    # Ignore if the file was empty
+    try:
+        pickle_in = open(path, "rb")
+        data = pickle.load(pickle_in)
+        pickle_in.close()
+    except EOFError:
+        pass
+    except FileNotFoundError:
+        pass
+    return data

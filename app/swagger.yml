@@ -164,6 +164,48 @@ paths:
                             payload:
                                 type: object
                                 default: {}
+    /getUserData/{username}:
+        post:
+            operationId: views.data.get_user_data
+            tags:
+                - user
+                - global
+            summary: Get all data from user
+            description: Fetch all data from user and global data files and return them. In duplicate data, User data is prioritized
+            parameters:
+                - name: username
+                  in: path
+                  description: Require username to interact
+                  required: True
+                  type: string
+                  minLength: 3
+                  maxLength: 30
+                  pattern: '^[^\\/?%*:|"<>\.]+$'
+            responses:
+                200:
+                    description: Successfully return all data
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: false
+                            message:
+                                type: string
+                            payload:
+                                type: array
+                                default: [{name: value}]
+                400:
+                    description: Error in entry
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: true
+                            message:
+                                type: string
+                            payload:
+                                type: object
+                                default: {}
     /setGlobalData:
         post:
             operationId: views.data.set_global_data
