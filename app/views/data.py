@@ -60,7 +60,7 @@ def get_user_data(username):
     global_path = os.path.join(utils.cwd_data(), "global_data.json")
 
     # Collect global data first and update with user data
-    # It will replace duplicate user data with globals
+    # It will replace duplicate global data with users
     result = dict()
     result = utils.get_data(global_path)
     result.update(utils.get_data(path))
