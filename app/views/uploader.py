@@ -31,6 +31,8 @@ def upload(username):
     if file.filename == '':
         return Response.failure('No file selected for uploading')
 
+    # TODO: should check the file size
+
     # create the user directory if not exist
     upsert_user_directory(username)
 
@@ -40,5 +42,5 @@ def upload(username):
 
     # srcure the file name and save it on disk
     filename = secure_filename(file.filename)
-    file.save(os.path.join('data', username, filename))
+    file.save(os.path.join(os.getcwd(), 'data', username, filename))
     return Response.success('File successfully uploaded', status_code=201)
