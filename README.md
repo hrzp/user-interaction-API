@@ -2,8 +2,6 @@
 
 This is a simple flask(connexion) API that provides some functionality to upload and download files and set and get data.
 
-
-
 ### How to launch?
 
 In Linux(Ubuntu):
@@ -22,7 +20,4 @@ python app/server.py
 
 ```
 
-Now open :
-
-[http://0.0.0.0:5000/api/ui]: http://0.0.0.0:5000/api/ui
-
+Now open : [http://0.0.0.0:5000/api/ui](http://0.0.0.0:5000/api/ui)
