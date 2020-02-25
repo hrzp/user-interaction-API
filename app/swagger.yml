@@ -1,0 +1,63 @@
+swagger: "2.0"
+info:
+    description: This API provides some functionality for users to upload their files and also set their own data or global data.
+    version: "1.0.0"
+    title: User interaction API
+consumes:
+    - application/json
+produces:
+    - application/json
+
+basePath: /api
+
+# Paths supported by the server application
+paths:
+    /upload:
+        post:
+            operationId: views.uploader.upload
+            tags:
+                - upload
+            summary: Update a file in user directory
+            description: User can upload ( *.txt, *.pdf, *.png, *.jpg, *.jpeg, *.gif) files in her space
+            consumes:
+                - multipart/form-data
+            parameters:
+                - name: username
+                  type: string
+                  minLength: 3
+                  maxLength: 30
+                  pattern: '^[^\\/?%*:|"<>\.]+$'
+                  in: formData
+                  description: The username
+                  required: true
+                - name: file
+                  in: formData
+                  description: The uploaded file data
+                  required: true
+                  type: file
+            responses:
+                201:
+                    description: Successfully uploaded
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: false
+                            message:
+                                type: string
+                                default: File successfully uploaded
+                            payload:
+                                type: object
+                                default: {}
+                400:
+                    description: Error in entry
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: true
+                            message:
+                                type: string
+                            payload:
+                                type: object
+                                default: {}

@@ -2,7 +2,7 @@ from flask import make_response, abort
 import connexion
 
 # Create the application instance
-app = connexion.App(
+app = connexion.FlaskApp(
     __name__,
     specification_dir='./',
     options={"swagger_ui": True}
@@ -17,9 +17,10 @@ def home():
     """
     This function just responds to the browser ULR
     localhost:5000/
-    :return:        Hello world message
+    :return:        Interface url
     """
-    return make_response('Hello world', 200)
+    resp = """<a href='/api/ui'>API Interface</a>"""
+    return make_response(resp, 200)
 
 
 # If we're running in stand alone mode, run the application
