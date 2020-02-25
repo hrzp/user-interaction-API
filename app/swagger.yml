@@ -12,7 +12,7 @@ basePath: /api
 
 # Paths supported by the server application
 paths:
-    /upload:
+    /upload/{username}:
         post:
             operationId: views.uploader.upload
             tags:
@@ -27,7 +27,7 @@ paths:
                   minLength: 3
                   maxLength: 30
                   pattern: '^[^\\/?%*:|"<>\.]+$'
-                  in: formData
+                  in: path
                   description: The username
                   required: true
                 - name: file
