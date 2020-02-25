@@ -16,7 +16,7 @@ app.add_api('swagger.yml')
 def home():
     """
     This function just responds to the browser ULR
-    localhost:5000/
+    :url localhost:5000/
     :return:        Interface url
     """
     resp = """<a href='/api/ui'>API Interface</a>"""
