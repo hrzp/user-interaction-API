@@ -37,7 +37,7 @@ def upload(username):
     if not (file and allowed_file(file.filename)):
         return Response.failure('Allowed file types are txt, pdf, png, jpg, jpeg, gif')
 
-    # srcure the file name and save it on disk
+    # secure the file name and save it on disk
     filename = secure_filename(file.filename)
     file.save(os.path.join(os.getcwd(), 'data', username, filename))
     return Response.success('File successfully uploaded', status_code=201)
