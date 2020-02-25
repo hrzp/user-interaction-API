@@ -1,4 +1,4 @@
-from app.utils.common import upsert_user_directory
+from app.utils.common import upsert_user_directory, cwd_data
 from app.utils.response_handler import Response
 from flask import request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
@@ -15,11 +15,14 @@ def download(username, filename):
     :param file:        file to download in user directory
     :return:            200 on success, 400 on errors
     """
-    try:
-        directory = os.path.join(os.getcwd(), "data", username)
-        if (not Path(os.path.join(directory, filename)).is_file()):
-            return Response.failure("File Not found")
-        return send_from_directory(
-            directory=directory, filename=filename, as_attachment=True)
-    except FileNotFoundError:
+
+    directory = os.path.join(cwd_data(), username)
+    file_path = os.path.join(directory, filename)
+
+    # return error if file or directory not found
+    if (not Path(file_path).is_file()):
         return Response.failure("File Not found")
+
+    # send file to client
+    return send_from_directory(
+        directory=directory, filename=filename, as_attachment=True)
