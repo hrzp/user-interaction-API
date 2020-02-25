@@ -1,7 +1,6 @@
 from app.utils.common import upsert_user_directory
 from app.utils.response_handler import Response
 from werkzeug.utils import secure_filename
-from flask import request, jsonify
 import connexion
 import os
 
@@ -24,9 +23,7 @@ def upload(username):
     # get the files from connexion
     file = connexion.request.files
     if 'file' not in file:
-        resp = jsonify({'message': 'No file part in the file'})
-        resp.status_code = 400
-        return resp
+        return Response.failure('No file part in the file')
     file = file['file']
     if file.filename == '':
         return Response.failure('No file selected for uploading')
