@@ -98,3 +98,69 @@ paths:
                             payload:
                                 type: object
                                 default: {}
+
+    /setUserData/{username}:
+        post:
+            operationId: views.data.set_user_data
+            tags:
+                - user
+            summary: Insert a key value
+            description: Insert a key value in user data.json, updated if exist
+            parameters:
+                - name: username
+                  in: path
+                  description: Require username to interact
+                  required: True
+                  type: string
+                  minLength: 3
+                  maxLength: 30
+                  pattern: '^[^\\/?%*:|"<>\.]+$'
+                - name: data
+                  in: body
+                  required: True
+                  schema:
+                      type: object
+                      properties:
+                          name:
+                              type: string
+                          value:
+                              type: string
+            responses:
+                201:
+                    description: Successful name and value entered in user data file
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: false
+                            message:
+                                type: string
+                                default: Data submitted
+                            payload:
+                                type: object
+                                default: {name: value}
+                200:
+                    description: Successful name and value updated in user data file
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: false
+                            message:
+                                type: string
+                                default: Data updated
+                            payload:
+                                type: object
+                                default: {name: value}
+                400:
+                    description: Error in entry
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: true
+                            message:
+                                type: string
+                            payload:
+                                type: object
+                                default: {}
