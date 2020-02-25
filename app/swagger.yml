@@ -61,3 +61,40 @@ paths:
                             payload:
                                 type: object
                                 default: {}
+
+    /download/{username}/{filename}:
+        get:
+            operationId: views.downloader.download
+            tags:
+                - download
+            summary: Download a file in user directory
+            description: Users can download their files
+            parameters:
+                - name: username
+                  in: path
+                  description: Require data to downloading the file
+                  required: True
+                  type: string
+                  minLength: 3
+                  maxLength: 30
+                  pattern: '^[^\\/?%*:|"<>\.]+$'
+                  description: username
+                - name: filename
+                  in: path
+                  required: True
+                  type: string
+            responses:
+                200:
+                    description: Return a file
+                400:
+                    description: Error in entry
+                    schema:
+                        properties:
+                            has_error:
+                                type: boolean
+                                default: true
+                            message:
+                                type: string
+                            payload:
+                                type: object
+                                default: {}
