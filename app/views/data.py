@@ -1,8 +1,10 @@
 from app.utils.response_handler import Response
+from app.utils.validator import requirment
 import app.utils.common as utils
 import os
 
 
+@requirment('name', 'value')  # check paramters
 def set_user_data(username, data):
     """
     This function inserts a key, value in user data.json in the own user directory.
@@ -12,7 +14,6 @@ def set_user_data(username, data):
     :param data:                        name and value to submit
     :return:                            201 on create, 200 on update, 400 on errors
     """
-
     # create the user directory if not exist
     utils.upsert_user_directory(username)
 
@@ -25,6 +26,7 @@ def set_user_data(username, data):
     return Response.success(message=message, payload=data, status_code=status_code)
 
 
+@requirment('name', 'value')  # check paramters
 def set_global_data(data):
     """
     This function inserts a key, value in global data.json in the main directory.
