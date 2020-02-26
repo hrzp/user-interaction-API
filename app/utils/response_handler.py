@@ -17,6 +17,7 @@ class Response:
     def success(message=None, payload=None, status_code=200):
         Response.res["message"] = message
         Response.res["payload"] = payload
+        Response.res["has_error"] = False
         result = jsonify(Response.res)
         result.status_code = status_code
         return result
