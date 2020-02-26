@@ -36,6 +36,8 @@ def set_global_data(data):
     :param data:                name and value to submit
     :return:                    201 on create, 200 on update, 400 on errors
     """
+    # create the data directory if not exist
+    utils.upsert_data_directory()
 
     # create the user data.json path
     path = os.path.join(utils.cwd_data(), "global_data.json")
