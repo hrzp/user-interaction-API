@@ -58,6 +58,39 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(data['has_error'], True)
 
+    def test_set_global_data(self):
+        # insert normal data
+        random_string = ''.join(random.choices(string.ascii_lowercase, k=5))
+        input_data = {
+            "name": f"globalKey_{random_string}",
+            "value": f"globalValue_{random_string}"
+        }
+        response = self.app.post(
+            '/api/setGlobalData', json=input_data)
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(data['has_error'], False)
+        self.assertEqual(data['message'], "Data submitted")
+
+        # insert the existed data
+        response = self.app.post(
+            '/api/setGlobalData', json=input_data)
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['has_error'], False)
+        self.assertEqual(data['message'], "Data updated")
+
+        # insert wrong data
+        input_data = {
+            "wrongname": "globalKey",
+            "wrongvalue": "globalValue"
+        }
+        response = self.app.post(
+            '/api/setGlobalData', json=input_data)
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['has_error'], True)
+
     def test_get_all(self):
         response = self.app.get(f'/api/getUserData/{self.test_user}')
         data = json.loads(response.get_data())
