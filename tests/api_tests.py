@@ -1,5 +1,7 @@
 from app.server import app
 import unittest
+import random
+import string
 import json
 
 
@@ -12,6 +14,8 @@ class TestFunctions(unittest.TestCase):
     def setUp(self):
         self.app = flask_app.test_client()
         self.app.testing = True
+        self.test_user = ''.join(random.choices(
+            string.ascii_uppercase + string.ascii_lowercase, k=6))  # create a random user for tests
 
     def test_app(self):
         """
@@ -22,11 +26,40 @@ class TestFunctions(unittest.TestCase):
         assert swagger_ui.status_code == 200
         assert b"Swagger UI" in swagger_ui.data
 
-    def set_user_data(self):
-        pass
+    def test_set_user_data(self):
+        # insert normal data
+        input_data = {
+            "name": "keyOfUser",
+            "value": "valueOfUser"
+        }
+        response = self.app.post(
+            f'/api/setUserData/{self.test_user}', json=input_data)
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(data['has_error'], False)
+        self.assertEqual(data['message'], "Data submitted")
 
-    def get_all(self):
-        response = self.app.get('/api/getUserData/user1')
+        # insert the existed data
+        response = self.app.post(
+            f'/api/setUserData/{self.test_user}', json=input_data)
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['has_error'], False)
+        self.assertEqual(data['message'], "Data updated")
+
+        # insert wrong data
+        input_data = {
+            "wrongname": "keyOfUser",
+            "wrongvalue": "valueOfUser"
+        }
+        response = self.app.post(
+            f'/api/setUserData/{self.test_user}', json=input_data)
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['has_error'], True)
+
+    def test_get_all(self):
+        response = self.app.get(f'/api/getUserData/{self.test_user}')
         data = json.loads(response.get_data())
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['has_error'], False)
