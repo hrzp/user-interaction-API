@@ -14,7 +14,7 @@ basePath: /api
 paths:
     /upload/{username}:
         post:
-            operationId: views.uploader.upload
+            operationId: app.views.uploader.upload
             tags:
                 - upload
             summary: Update a file in user directory
@@ -64,7 +64,7 @@ paths:
 
     /download/{username}/{filename}:
         get:
-            operationId: views.downloader.download
+            operationId: app.views.downloader.download
             tags:
                 - download
             summary: Download a file in user directory
@@ -101,7 +101,7 @@ paths:
 
     /setUserData/{username}:
         post:
-            operationId: views.data.set_user_data
+            operationId: app.views.data.set_user_data
             tags:
                 - user
             summary: Insert a key value
@@ -165,8 +165,8 @@ paths:
                                 type: object
                                 default: {}
     /getUserData/{username}:
-        post:
-            operationId: views.data.get_user_data
+        get:
+            operationId: app.views.data.get_user_data
             tags:
                 - user
                 - global
@@ -208,7 +208,7 @@ paths:
                                 default: {}
     /setGlobalData:
         post:
-            operationId: views.data.set_global_data
+            operationId: app.views.data.set_global_data
             tags:
                 - user
                 - global
