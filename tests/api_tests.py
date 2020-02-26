@@ -115,6 +115,31 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(data['has_error'], True)
         self.assertIn("Allowed file types are", data['message'])
 
+    def test_download_file(self):
+        # before testing download we upload a file then download it
+        # insert normal data
+        data = {
+            "file": open("tests/files/sample.jpg", 'rb')
+        }
+        response = self.app.post(
+            f'/api/upload/{self.test_user}', data=data, content_type='multipart/form-data')
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 201)
+
+        # download uploaded file
+        response = self.app.get(
+            f'/api/download/{self.test_user}/tests_files_sample.jpg')
+        self.assertEqual(response.status_code, 200)
+        response.close()  # close it cause of ResourceWarning
+
+        # wrong file to download
+        response = self.app.get(
+            f'/api/download/{self.test_user}/wrong_file.jpg')
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['has_error'], True)
+        self.assertIn("File Not found", data['message'])
+
     def test_get_all(self):
         response = self.app.get(f'/api/getUserData/{self.test_user}')
         data = json.loads(response.get_data())
