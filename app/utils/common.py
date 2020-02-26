@@ -47,7 +47,8 @@ def upsert_data(path, name, value):
         latest_data = pickle.load(pickle_in)
         pickle_in.close()
     except EOFError:
-        pass
+        if pickle_in:
+            pickle_in.close()
 
     if name in latest_data:
         status_code = 200
@@ -69,7 +70,9 @@ def get_data(path):
         data = pickle.load(pickle_in)
         pickle_in.close()
     except EOFError:
-        pass
+        if pickle_in:
+            pickle_in.close()
     except FileNotFoundError:
-        pass
+        if pickle_in:
+            pickle_in.close()
     return data
