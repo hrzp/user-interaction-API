@@ -3,9 +3,11 @@ import unittest
 import random
 import string
 import json
-
+import os
 
 flask_app = app.app
+user = ''.join(random.choices(
+    string.ascii_uppercase + string.ascii_lowercase, k=6))  # create a random user for tests
 
 
 class TestFunctions(unittest.TestCase):
@@ -14,8 +16,7 @@ class TestFunctions(unittest.TestCase):
     def setUp(self):
         self.app = flask_app.test_client()
         self.app.testing = True
-        self.test_user = ''.join(random.choices(
-            string.ascii_uppercase + string.ascii_lowercase, k=6))  # create a random user for tests
+        self.test_user = user
 
     def test_app(self):
         """
@@ -90,6 +91,29 @@ class TestFunctions(unittest.TestCase):
         data = json.loads(response.get_data())
         self.assertEqual(response.status_code, 400)
         self.assertEqual(data['has_error'], True)
+
+    def test_upload_file(self):
+        # insert normal data
+        data = {
+            "file": open("tests/files/sample.jpg", 'rb')
+        }
+        response = self.app.post(
+            f'/api/upload/{self.test_user}', data=data, content_type='multipart/form-data')
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(data['has_error'], False)
+        self.assertEqual(data['message'], "File successfully uploaded")
+
+        # insert unacceptable file type
+        data = {
+            "file": open("tests/files/sample.svg", 'rb')
+        }
+        response = self.app.post(
+            f'/api/upload/{self.test_user}', data=data, content_type='multipart/form-data')
+        data = json.loads(response.get_data())
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['has_error'], True)
+        self.assertIn("Allowed file types are", data['message'])
 
     def test_get_all(self):
         response = self.app.get(f'/api/getUserData/{self.test_user}')
