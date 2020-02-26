@@ -9,7 +9,7 @@ app = connexion.FlaskApp(
 )
 
 # Read the swagger.yml file to configure the endpoints
-app.add_api('swagger.yml')
+app.add_api('swagger.yml', strict_validation=True)
 
 # Create a URL route in our application for "/"
 @app.route('/')
