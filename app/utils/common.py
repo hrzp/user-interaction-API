@@ -16,6 +16,15 @@ def upsert_user_directory(username):
     ).mkdir(parents=True, exist_ok=True)
 
 
+def upsert_data_directory():
+    """
+    This function checks the user directory if not exist, creates it.
+    """
+    Path(os.path.join(
+        "data")
+    ).mkdir(parents=True, exist_ok=True)
+
+
 def check_data_file(path):
     """
     Create a new file if not exist
