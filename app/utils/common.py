@@ -42,11 +42,15 @@ def upsert_data(path, name, value):
     status_code = 201
 
     # Ignore if the file was empty
+    pickle_in = None
     try:
         pickle_in = open(path, "rb")
         latest_data = pickle.load(pickle_in)
         pickle_in.close()
     except EOFError:
+        if pickle_in:
+            pickle_in.close()
+    except FileNotFoundError:
         if pickle_in:
             pickle_in.close()
 
@@ -65,6 +69,7 @@ def upsert_data(path, name, value):
 def get_data(path):
     data = dict()
     # Ignore if the file was empty
+    pickle_in = None
     try:
         pickle_in = open(path, "rb")
         data = pickle.load(pickle_in)
