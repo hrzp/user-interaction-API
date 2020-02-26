@@ -21,3 +21,22 @@ python app/server.py
 ```
 
 Now open : [http://0.0.0.0:5000/api/ui](http://0.0.0.0:5000/api/ui)
+
+API routes and descriptions are available in the above link
+
+## Running Tests
+
+```bash
+# if your virtual environment not active
+source venv/bin/activate
+
+python tests/api_tests.py
+
+# result should be like this
+# ......
+# ----------------------------------------------------------------------
+# Ran 6 tests in 0.032s
+#
+# OK
+```
+
